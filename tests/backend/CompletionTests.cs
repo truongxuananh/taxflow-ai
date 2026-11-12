@@ -72,9 +72,17 @@ public sealed class ApiFactory : WebApplicationFactory<Program>
         client.DefaultRequestHeaders.Add("X-Company-Id", CompanyA.ToString());
         return client;
     }
+        private bool databaseDropped;
     protected override void Dispose(bool disposing)
     {
-        if (disposing && mysql is not null) { using var scope = Services.CreateScope(); scope.ServiceProvider.GetRequiredService<AppDbContext>().Database.EnsureDeleted(); }
+        // WebApplicationFactory gọi lại Dispose(true) sau khi đã giải phóng Services,
+        // nên chỉ xóa database MySQL tạm ở lần gọi đầu tiên.
+        if (disposing && mysql is not null && !databaseDropped)
+        {
+            databaseDropped = true;
+            using var scope = Services.CreateScope();
+            scope.ServiceProvider.GetRequiredService<AppDbContext>().Database.EnsureDeleted();
+        }
         base.Dispose(disposing); if (disposing) connection.Dispose();
     }
 }
