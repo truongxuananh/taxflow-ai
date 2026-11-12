@@ -1,0 +1,324 @@
+{
+  "version": "TaxFlow AI V5 - Gemini read-only function calling",
+  "backend": {
+    "passed": 53,
+    "skipped": 0,
+    "failed": 0,
+    "engine": "ASP.NET TestServer + SQLite; Gemini responses mocked for deterministic integration tests",
+    "cases": [
+      {
+        "name": "TaxFlow.Tests.CompletionTests.ExistingAccountCannotBeAttachedWithoutConsent",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.ConversationTests.FollowUpDoesNotRerankAndDoesNotReuseStaleBalance",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.NaturalLanguageTests.RateLimitIsVisibleAndNeverClaimsGeminiAnswered",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.NaturalLanguageTests.PlannerRejectsUntrustedOrIncompleteResponses(response: \"{\\\"candidates\\\":[{\\\"content\\\":{\\\"parts\\\":[{\\\"funct\"···)",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.CompletionTests.ProfitExcludesInventoryPurchasesAndCountsCostOfGoods",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.NaturalLanguageTests.CustomerContextCannotEscapeCompanyScope",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.ConversationTests.TopDebtorThenOverdueAnswersWithActualDays(followUp: \"trễ hạn mấy ngày\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.CompletionTests.PdfExportKeepsVietnameseAndAllRowsAcrossPages",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.NaturalLanguageTests.AmbiguousOrInvalidArgumentsFailClosed(scenario: \"invalid-date\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.ProviderAndExportTests.PdfExport_HasPdfSignature",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.NaturalLanguageTests.MissingKeyFallbackCanAnswerFinancialQueriesWithoutCloud",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.CompletionTests.FullReturnRestoresStockAndRefundsOnlyOnce",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.MySqlMigrationTests.UpgradePreservesLegacyMembershipRoleAndActivatesIt",
+        "outcome": "NotExecuted"
+      },
+      {
+        "name": "TaxFlow.Tests.ConversationTests.PaymentQuestionReadsTheLinkedPaymentLedger",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.ConversationTests.MissingContextAsksForTheCustomerInsteadOfAMonthlySummary",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.CompletionTests.MissingCommandKeyCannotWriteMoney",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.NaturalLanguageTests.ParaphraseAndFollowUpUseServerContextAndFreshAmounts",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.CompletionTests.OptimisticConcurrencyRejectsLostStockUpdates",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.NaturalLanguageTests.AmbiguousOrInvalidArgumentsFailClosed(scenario: \"extra-company\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.ProviderAndExportTests.XlsxExport_IsAValidZipContainer",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.ConversationTests.TopDebtorThenOverdueAnswersWithActualDays(followUp: \"Quá hạn bao lâu?\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.NaturalLanguageTests.FinanceFollowUpInheritsPeriodAndUsesNewLedgerValues",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.CompletionTests.AssistantResolvesTheRequestedMonth(question: \"VAT tháng 7/2025\", year: 2025, month: 7)",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.CompletionTests.AssistantResolvesTheRequestedMonth(question: \"Doanh thu tháng trước\", year: 2026, month: 10)",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.NaturalLanguageTests.MultipleToolsCanUseTheContextOfThePreviousTool",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.ProviderAndExportTests.CsvExport_IsUtf8AndContainsHeaders",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.ConversationTests.FollowUpFindsTheLinkedBusinessRecord(question: \"cho tôi xem chi tiết\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.NaturalLanguageTests.InvoicesAreScopedAndFollowUpRequeriesTheSelectedInvoice",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.NaturalLanguageTests.StatusExposesPresenceButNeverTheKeyOrUnverifiedConnection",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.NaturalLanguageTests.FinancialDatesUseVietnamBoundariesAndCompareActualLedger",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.CompletionTests.PasswordChangeRevokesAnAlreadyIssuedToken",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.CompletionTests.BrowseEndpointTranslatesAndPaginates",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.CompletionTests.InvoiceArithmeticMismatchIsBlocking",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.ConversationTests.FollowUpFindsTheLinkedBusinessRecord(question: \"khoản gì\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.NaturalLanguageTests.AmbiguousOrInvalidArgumentsFailClosed(scenario: \"missing-context\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.ConversationTests.ExplicitCustomerNameWorksWithoutPriorContext",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.NaturalLanguageTests.PlannerRejectsUntrustedOrIncompleteResponses(response: \"{\\\"candidates\\\":[{\\\"content\\\":{\\\"parts\\\":[{\\\"text\\\"···)",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.CompletionTests.InvitationRequiresTheIntendedRecipientAndCreatesOnlyScopedRole",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.NaturalLanguageTests.PlannerRejectsUntrustedOrIncompleteResponses(response: \"{}\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.NaturalLanguageTests.PlannerRejectsUntrustedOrIncompleteResponses(response: \"{\\\"candidates\\\":[{\\\"finishReason\\\":\\\"MAX_TOKENS\\\",\"···)",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.CompletionTests.DebtSettlementCannotBeAppliedTwiceOrOverpaid",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.ConversationTests.FollowUpFindsTheLinkedBusinessRecord(question: \"đơn nào?\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.ConversationTests.DeletingHistoryAlsoDeletesFollowUpState",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.NaturalLanguageTests.PlannerUsesDeclaredToolsAndKeyHeaderWithoutKeyInUrl",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.NaturalLanguageTests.PlannerRejectsUntrustedOrIncompleteResponses(response: \"{\\\"candidates\\\":[{\\\"content\\\":{\\\"parts\\\":[{\\\"funct\"···)",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.CompletionTests.BankMatchDoesNotCreateASecondIncome",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.CompletionTests.IncomeCommandReplaysOnceAndRejectsDifferentPayload",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.CompletionTests.MembershipRoleIsResolvedForEachCompanyAndChangesImmediately",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.ConversationTests.CompanyAndUserConversationStateAreIsolated",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.NaturalLanguageTests.AmbiguousCustomerNameAsksInsteadOfChoosingArbitrarily",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.CompletionTests.DiscountReducesVatAndInvoiceTotalsAgree",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.ConversationTests.TopDebtorThenOverdueAnswersWithActualDays(followUp: \"quá hạn bao lâu\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.ProviderAndExportTests.DemoProvider_UsesFilenameHintsWithoutInventingAmounts",
+        "outcome": "Passed"
+      },
+      {
+        "name": "TaxFlow.Tests.ConversationTests.TamperedForeignCustomerContextCannotReadAnotherCompany",
+        "outcome": "Passed"
+      }
+    ]
+  },
+  "frontend": {
+    "status": "PASS",
+    "routes": 15,
+    "checks": [
+      "login/logout",
+      "8 animated metric cards",
+      "role-specific navigation",
+      "modal title and initial focus",
+      "Escape and scroll lock",
+      "company change refetch",
+      "mobile menu open/close",
+      "protected route redirect"
+    ],
+    "note": "DOM tests with mocked API responses; no live backend or visual browser verification",
+    "build": "PASS, TypeScript + Vite",
+    "verificationVersion": "V5"
+  },
+  "python": {
+    "previousV41Result": {
+      "passed": 14,
+      "failed": 0
+    },
+    "rerunForV5": false,
+    "reason": "No Python, PDF renderer or EF model changes in V5"
+  },
+  "pdf": {
+    "previousV41Result": {
+      "pages": 6,
+      "rows": 150,
+      "vietnameseLastRowVerified": true
+    },
+    "rerunForV5": false,
+    "reason": "No Python, PDF renderer or EF model changes in V5"
+  },
+  "migrationModel": {
+    "previousV41Result": "No pending changes",
+    "rerunForV5": false,
+    "reason": "No Python, PDF renderer or EF model changes in V5"
+  },
+  "yaml": "Compose and CI parsed for V5",
+  "notExecuted": [
+    "Docker Compose runtime",
+    "MySQL server and legacy migration execution",
+    "Real browser screenshots and device layout",
+    "PowerShell backup/restore execution",
+    "External invoice gateway/payment provider calls",
+    "OCR accuracy on a representative labeled real-world dataset"
+  ],
+  "conversationRegressionTests": 13,
+  "geminiConfigurationCheck": "Configured key/model successfully authenticated for 2 planner requests; subsequent calls encountered timeout/HTTP503. No sustained-load/quota guarantee.",
+  "checkedAtUtc": "2026-11-12T12:59:23.335054+00:00",
+  "backendReleasePublish": "PASS (.NET SDK 8.0.422)",
+  "naturalLanguageRegressionTests": 19,
+  "geminiLiveCheck": {
+    "scope": "Planner-only calls with synthetic questions/history, no database records sent",
+    "passed": 2,
+    "failed": 2,
+    "cases": [
+      {
+        "question": "Ai đang thiếu tiền bên mình nhiều nhất?",
+        "status": "success",
+        "calls": [
+          {
+            "Name": "get_receivables",
+            "Arguments": {
+              "view": "top"
+            }
+          }
+        ]
+      },
+      {
+        "question": "Doanh thu tháng trước là bao nhiêu?",
+        "status": "success",
+        "calls": [
+          {
+            "Name": "get_financial_metrics",
+            "Arguments": {
+              "metric": "revenue",
+              "fromDate": "2026-10-01",
+              "toDate": "2026-10-31"
+            }
+          }
+        ]
+      },
+      {
+        "question": "khoản gì",
+        "status": "failed",
+        "reason": "TaskCanceledException"
+      },
+      {
+        "question": "quá hạn bao lâu",
+        "status": "failed",
+        "reason": "http_503"
+      }
+    ],
+    "limitation": "Two simple requests succeeded; follow-up requests encountered timeout and HTTP 503. Does not prove all paraphrases, production availability or live database integration."
+  }
+}

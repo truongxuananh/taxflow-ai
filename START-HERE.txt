@@ -1,0 +1,35 @@
+BẢN V5 + GIAO DIỆN MỚI "MỰC & DẤU"
+Gói này là dự án hoàn chỉnh: frontend mới + backend/ai-service/database V5 (không đổi).
+Chạy: docker compose up -d --build   (lần đầu build lâu vài phút)
+Sau đó mở http://localhost:3000, nhấn Ctrl + Shift + R, đăng nhập lại.
+Nếu đang có dữ liệu cũ: KHÔNG chạy docker compose down -v; giữ nguyên volume MySQL.
+Chi tiết giao diện: frontend/GIAO-DIEN-MOI.md
+
+BẢN V5 — Mở HOI-DAP-TU-NHIEN-V5.html trước.
+ASSISTANT_MODE=natural; giữ GEMINI_API_KEY và GEMINI_MODEL đang hoạt động trong .env.
+Rebuild: docker compose up -d --build
+Sau gửi câu hỏi, kiểm tra nhãn Gemini hiểu câu hỏi · dữ liệu từ hệ thống.
+
+BẢN V4.1 — Mở SUA-LOI-HOI-THOAI-V4.1.html trước.
+Rebuild: docker compose up -d --build
+Sau cập nhật, hỏi lại “Khách hàng nợ nhiều nhất” để tạo ngữ cảnh mới.
+
+TAXFLOW AI V4 — BẮT ĐẦU TẠI ĐÂY
+
+1. Mở HUONG-DAN-V4.html bằng trình duyệt để đọc hướng dẫn đầy đủ.
+2. Nếu đang có database: sao lưu trước; giữ .env, storage và Docker volumes.
+3. Mở Docker Desktop.
+4. Mở PowerShell tại thư mục chứa docker-compose.yml.
+5. Chạy: docker compose up -d --build
+6. Chờ healthy: docker compose ps
+7. Mở http://localhost:3000 và bấm Ctrl + Shift + R.
+8. Đăng nhập lại. Không chạy docker compose down -v để nâng cấp.
+
+MÃ NGUỒN: frontend, backend, ai-service.
+TÀI LIỆU: docs/COMPLETION-V4.md, HUONG-DAN-V4.html.
+KIỂM THỬ: validation/RESULTS.md, tests/backend, frontend/tests, ai-service/test_*.py.
+SAO LƯU/KHÔI PHỤC: scripts/Backup.ps1, scripts/Restore.ps1.
+NÂNG CẤP SCHEMA: backend/Data/Migrations và database/upgrade-v4.sql.
+
+Các tích hợp thanh toán/hóa đơn thật vẫn cần nhà cung cấp và cấu hình riêng.
+Bản này chưa được kiểm tra Docker/MySQL và giao diện trực quan trên máy đích.

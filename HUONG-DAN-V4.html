@@ -1,0 +1,434 @@
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TaxFlow AI V4 — Hướng dẫn chi tiết</title><style>*{box-sizing:border-box}body{margin:0;background:#f3f7ff;color:#172d50;font:15px/1.75 "Segoe UI",Arial,sans-serif}header{background:linear-gradient(110deg,#1749b8,#3178ef);color:white;padding:44px max(24px,calc((100vw - 1120px)/2))}header p{opacity:.8}main{max-width:1180px;margin:28px auto;padding:0 24px}article{background:white;border:1px solid #e0e9f8;border-radius:18px;padding:32px;overflow-wrap:anywhere}h1,h2,h3{line-height:1.3;scroll-margin-top:24px}h1{font-size:30px}h2{font-size:23px;color:#1d54c8;margin-top:40px;padding-top:18px;border-top:1px solid #e4ecf8}h3{font-size:18px}a{color:#2463df}table{display:block;overflow-x:auto;border-collapse:collapse;width:100%;font-size:13px;margin:20px 0}th,td{padding:12px;border:1px solid #dbe6f5;vertical-align:top;min-width:140px}th{background:#eaf2ff;text-align:left}tr:nth-child(even){background:#fafcff}pre{background:#13284b;color:#e0ecff;border-radius:10px;padding:18px;overflow-x:auto;line-height:1.5}code{font-size:13px}p>code,li>code{background:#edf3fc;padding:2px 5px;border-radius:4px;color:#2159c8}.toc{background:#f6f9ff;border:1px solid #e1eafa;padding:20px;border-radius:14px}.toc ul{padding-left:22px}.badge{display:inline-block;border:1px solid #ffffff50;border-radius:20px;padding:3px 12px;font-size:12px}@media(max-width:600px){article{padding:18px}main{padding:0 10px}h1{font-size:24px}h2{font-size:20px}}@media print{body{background:white;font-size:11px}header{padding:20px;background:#1749b8}main{max-width:none;padding:0}article{border:0;padding:0}pre{white-space:pre-wrap;background:#f3f6fb;color:#172d50}h2{break-after:avoid}tr{break-inside:avoid}.toc{display:none}}</style></head><body><header><span class="badge">TAXFLOW AI · V4</span><h1>Hướng dẫn nâng cấp & sử dụng</h1><p>Phân quyền · Tiền & kho · OCR · Chatbot · Báo cáo · Kiểm thử</p></header><main><article><h2>Mục lục</h2><div class="toc">
+<ul>
+<li><a href="#taxflow-ai-v4-huong-dan-nang-cap-su-dung-va-kiem-chung">TaxFlow AI V4 — Hướng dẫn nâng cấp, sử dụng và kiểm chứng</a><ul>
+<li><a href="#1-oc-truoc-khi-chay">1. Đọc trước khi chạy</a></li>
+<li><a href="#2-ma-tran-xu-ly-cac-thieu-sot">2. Ma trận xử lý các thiếu sót</a></li>
+<li><a href="#3-cong-nghe-va-cac-cong">3. Công nghệ và các cổng</a></li>
+<li><a href="#4-cai-moi-tren-windows">4. Cài mới trên Windows</a></li>
+<li><a href="#5-nang-cap-du-an-ang-co-du-lieu">5. Nâng cấp dự án đang có dữ liệu</a></li>
+<li><a href="#6-tai-khoan-demo">6. Tài khoản demo</a></li>
+<li><a href="#7-phan-quyen-va-vong-oi-tai-khoan">7. Phân quyền và vòng đời tài khoản</a></li>
+<li><a href="#8-tinh-tien-vat-va-gia-von">8. Tính tiền, VAT và giá vốn</a></li>
+<li><a href="#9-transaction-va-chong-ghi-trung">9. Transaction và chống ghi trùng</a></li>
+<li><a href="#10-hoan-tra-on-hang">10. Hoàn trả đơn hàng</a></li>
+<li><a href="#11-quan-ly-chung-tu-va-ocr">11. Quản lý chứng từ và OCR</a></li>
+<li><a href="#12-vat-trong-bao-cao">12. VAT trong báo cáo</a></li>
+<li><a href="#13-tra-cuu-oi-tac-va-sao-ke">13. Tra cứu, đối tác và sao kê</a></li>
+<li><a href="#14-chatbot-va-lich-su">14. Chatbot và lịch sử</a></li>
+<li><a href="#15-du-bao-va-anh-gia-ai">15. Dự báo và đánh giá AI</a></li>
+<li><a href="#16-xuat-bao-cao">16. Xuất báo cáo</a></li>
+<li><a href="#17-gateway-hoa-on-ien-tu-tuy-chon">17. Gateway hóa đơn điện tử tùy chọn</a></li>
+<li><a href="#18-kiem-thu-va-ci">18. Kiểm thử và CI</a></li>
+<li><a href="#19-sao-luu-va-khoi-phuc">19. Sao lưu và khôi phục</a></li>
+<li><a href="#20-xu-ly-loi-thuong-gap">20. Xử lý lỗi thường gặp</a></li>
+<li><a href="#21-pham-vi-chua-uoc-chung-nhan-hoan-tat">21. Phạm vi chưa được chứng nhận hoàn tất</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="taxflow-ai-v4-huong-dan-nang-cap-su-dung-va-kiem-chung">TaxFlow AI V4 — Hướng dẫn nâng cấp, sử dụng và kiểm chứng</h1>
+<p>Bản nâng cấp từ dự án TaxFlow AI xanh dương–trắng. Tài liệu này mô tả hành vi thực tế của mã nguồn V4 và thay thế các ghi chú cũ khi có khác biệt. Đây là phần mềm quản trị/đồ án, chưa phải một sản phẩm kế toán đã được chứng nhận triển khai thực tế.</p>
+<h2 id="1-oc-truoc-khi-chay">1. Đọc trước khi chạy</h2>
+<ul>
+<li>Toàn bộ mã nguồn, migration, bộ kiểm thử và tài liệu nằm trong cùng thư mục <code>TaxFlow-AI-Docker-Ready</code>.</li>
+<li>Giao diện tiếp tục dùng xanh dương–trắng và hỗ trợ giảm chuyển động theo cài đặt thiết bị.</li>
+<li>Bản nâng cấp thay đổi schema. Database có dữ liệu cần được sao lưu trước.</li>
+<li>Không xóa volume MySQL. Không dùng <code>docker compose down -v</code> để cập nhật.</li>
+<li>Sau nâng cấp, đăng nhập lại. JWT cũ thiếu phiên bản xác thực sẽ không còn được chấp nhận.</li>
+<li>Các công thức trong V4 phục vụ quản trị. Kế toán cần đối chiếu chứng từ, phương pháp giá vốn và kỳ ghi nhận thực tế.</li>
+</ul>
+<h2 id="2-ma-tran-xu-ly-cac-thieu-sot">2. Ma trận xử lý các thiếu sót</h2>
+<table>
+<thead>
+<tr>
+<th>Nhóm vấn đề</th>
+<th>Đã triển khai trong V4</th>
+<th>Giới hạn cần biết</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nhiều doanh nghiệp</td>
+<td>Vai trò và trạng thái hoạt động nằm trên CompanyUsers; kiểm tra mỗi request</td>
+<td>Chưa có SSO hoặc danh tính liên kết bên ngoài</td>
+</tr>
+<tr>
+<td>Thu hồi phiên</td>
+<td>AuthVersion, đổi mật khẩu/đăng xuất thu hồi phiên; quyền thành viên đọc trực tiếp từ DB</td>
+<td>Token vẫn được lưu ở localStorage; cần ngăn XSS và dùng HTTPS khi triển khai</td>
+</tr>
+<tr>
+<td>Thêm người đã có tài khoản</td>
+<td>Lời mời 7 ngày, chỉ đúng người nhận đăng nhập mới được chấp nhận</td>
+<td>Chưa gửi email; thông báo nằm trong ứng dụng</td>
+</tr>
+<tr>
+<td>Tiền và kho</td>
+<td>Transaction Serializable, revision chống mất cập nhật, Idempotency-Key và lịch sử phản hồi</td>
+<td>Khóa phía trình duyệt giữ trong bộ nhớ 15 phút; sau tải lại trang cần tra cứu lịch sử trước khi gửi lại giao dịch chưa rõ kết quả</td>
+</tr>
+<tr>
+<td>Hoàn trả</td>
+<td>Hoàn toàn bộ đơn chưa có hóa đơn phát hành thật; hoàn tiền, nhập lại kho, xóa nợ còn lại, audit</td>
+<td>Chưa có hoàn từng phần hoặc điều chỉnh hóa đơn hợp pháp tự động</td>
+</tr>
+<tr>
+<td>Công thức tài chính</td>
+<td>Doanh thu chưa VAT, giá vốn snapshot lúc bán, loại mua hàng tồn kho khỏi chi phí vận hành; giảm giá phân bổ trước VAT</td>
+<td>Chưa phải hệ thống bút toán kép; giá vốn lịch sử được backfill từ giá mua tại lúc nâng cấp và là ước tính</td>
+</tr>
+<tr>
+<td>Kiểm tra hóa đơn</td>
+<td>Chặn sai tổng tiền và sai tổng dòng; giữ confidence OCR gốc khi người dùng xác nhận</td>
+<td>Hóa đơn phí/chiết khấu phức tạp cần được nhập, kiểm tra đúng schema hiện tại</td>
+</tr>
+<tr>
+<td>OCR</td>
+<td>PageCount, preview trả số trang, OCR đúng trang đang chọn, sửa dòng hàng, mở chứng từ chờ, chạy lại</td>
+<td>Không khẳng định OCR đúng trên mọi mẫu; chưa có job fine-tune OCR tự động</td>
+</tr>
+<tr>
+<td>Chatbot</td>
+<td>Truy vấn kỳ có kiểm soát, trả số trực tiếp từ DB, lưu lịch sử theo người và doanh nghiệp</td>
+<td>Chưa hỗ trợ truy vấn SQL tự do; câu hỏi không được hỗ trợ được trả lời rõ giới hạn</td>
+</tr>
+<tr>
+<td>AI/ML</td>
+<td>Backtest dự báo giữ lại 20%, MAE và baseline; giải thích điểm bất thường; CLI đánh giá OCR theo nhãn</td>
+<td>Chưa có số đo độ chính xác tổng quát trên bộ dữ liệu thực của người dùng</td>
+</tr>
+<tr>
+<td>Frontend</td>
+<td>Tra cứu phân trang phía server, bộ lọc, chi tiết, chỉnh đối tác, tài khoản/lời mời, quản lý vai trò, đối soát ngân hàng, bảo vệ biểu mẫu</td>
+<td>Kiểm thử DOM không thay thế kiểm tra trực quan trên thiết bị thật</td>
+</tr>
+<tr>
+<td>Xuất báo cáo</td>
+<td>PDF nhiều trang có font tiếng Việt, không giới hạn 42 dòng; file theo lọc ngày/từ khóa; chống công thức CSV</td>
+<td>Các báo cáo vẫn là báo cáo quản trị; xuất theo trạng thái chưa được hỗ trợ</td>
+</tr>
+<tr>
+<td>Tích hợp bên ngoài</td>
+<td>Adapter hóa đơn qua gateway HTTPS với khóa server và contract rõ ràng</td>
+<td>Cần nhà cung cấp thật triển khai gateway; thanh toán QR/thẻ/ví vẫn ghi nhận thủ công</td>
+</tr>
+<tr>
+<td>Vận hành</td>
+<td>CI, script kiểm tra, sao lưu/khôi phục, font license, hạn chế cổng về localhost, HTTP security headers</td>
+<td>Chưa chạy Docker/MySQL thực tế trong môi trường xây dựng bản này; cần kiểm tra tại máy đích</td>
+</tr>
+</tbody>
+</table>
+<h2 id="3-cong-nghe-va-cac-cong">3. Công nghệ và các cổng</h2>
+<table>
+<thead>
+<tr>
+<th>Thành phần</th>
+<th>Công nghệ</th>
+<th>Cổng mặc định ở máy người dùng</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Frontend</td>
+<td>React 18, TypeScript, Vite, Tailwind, Recharts, Nginx</td>
+<td>http://localhost:3000</td>
+</tr>
+<tr>
+<td>Backend</td>
+<td>ASP.NET Core 8, EF Core, JWT</td>
+<td>http://localhost:5001</td>
+</tr>
+<tr>
+<td>Swagger</td>
+<td>Tài liệu API của backend</td>
+<td>http://localhost:5001/swagger</td>
+</tr>
+<tr>
+<td>MySQL</td>
+<td>MySQL 8.4</td>
+<td>localhost:3307</td>
+</tr>
+<tr>
+<td>AI local</td>
+<td>Python FastAPI, Tesseract, scikit-learn</td>
+<td>http://localhost:8000</td>
+</tr>
+</tbody>
+</table>
+<p>Các cổng mặc định bind vào <code>127.0.0.1</code>. Chỉ đổi <code>BIND_ADDRESS=0.0.0.0</code> khi chủ động cho phép truy cập qua mạng và đã có biện pháp bảo vệ phù hợp.</p>
+<h2 id="4-cai-moi-tren-windows">4. Cài mới trên Windows</h2>
+<ol>
+<li>Cài và mở Docker Desktop với WSL2.</li>
+<li>Giải nén ZIP vào đường dẫn dễ tìm, ví dụ <code>D:\TaxFlow-V4</code>.</li>
+<li>Mở PowerShell trong thư mục có <code>docker-compose.yml</code>.</li>
+<li>Nếu chưa có <code>.env</code>, sao chép <code>.env.example</code> thành <code>.env</code>.</li>
+<li>Cấu hình mật khẩu MySQL và JWT_SECRET. JWT_SECRET tối thiểu 32 ký tự, không dùng chuỗi mẫu khi mở ra mạng.</li>
+<li>Chạy:</li>
+</ol>
+<pre><code class="language-powershell">docker compose up -d --build
+docker compose ps
+</code></pre>
+<ol>
+<li>Chờ các dịch vụ healthy, mở http://localhost:3000.</li>
+<li>Nếu giao diện cũ còn cache, bấm Ctrl + Shift + R.</li>
+</ol>
+<p>Nếu đã có volume database từ dự án cũ, mật khẩu trong <code>.env</code> phải khớp với volume đó. Đổi biến môi trường không tự đổi mật khẩu bên trong MySQL đã được tạo.</p>
+<h2 id="5-nang-cap-du-an-ang-co-du-lieu">5. Nâng cấp dự án đang có dữ liệu</h2>
+<ol>
+<li>Giữ nguyên dự án cũ và file <code>.env</code> trước khi thử bản mới.</li>
+<li>Khi hệ thống cũ đang chạy, sao lưu SQL và storage. Có thể dùng script V4 đã được chép riêng sang thư mục cũ:</li>
+</ol>
+<pre><code class="language-powershell">powershell -ExecutionPolicy Bypass -File .\scripts\Backup.ps1
+</code></pre>
+<ol>
+<li>Dừng các tiến trình ghi dữ liệu khi chuyển phiên bản. Không xóa volume.</li>
+<li>Thay mã nguồn bằng V4; giữ <code>.env</code>, storage và tên Compose project <code>taxflow-ai</code>.</li>
+<li>Chạy <code>docker compose up -d --build</code>.</li>
+<li>Backend tự chạy migration <code>CompletionSecurityAndLedger</code>.</li>
+<li>Đăng nhập lại, kiểm tra doanh nghiệp, vai trò, tồn kho, công nợ và báo cáo.</li>
+<li>Thử một đơn nhỏ, một lần thanh toán công nợ và một hóa đơn mẫu trước khi dùng tiếp dữ liệu quan trọng.</li>
+</ol>
+<p>Migration thêm các cột/bảng mới, backfill vai trò thành viên từ vai trò cũ và trạng thái active từ người dùng. Giá vốn đơn cũ được lấy từ giá mua sản phẩm tại lúc migration; không được diễn giải là giá vốn lịch sử đã xác minh. Hóa đơn đầu vào cũ chưa được tự đánh dấu rà soát kế toán.</p>
+<h2 id="6-tai-khoan-demo">6. Tài khoản demo</h2>
+<table>
+<thead>
+<tr>
+<th>Vai trò ban đầu</th>
+<th>Email</th>
+<th>Mật khẩu demo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Quản trị</td>
+<td>admin@example.com</td>
+<td>Admin@123</td>
+</tr>
+<tr>
+<td>Kế toán</td>
+<td>accountant@example.com</td>
+<td>Accountant@123</td>
+</tr>
+<tr>
+<td>Nhân viên</td>
+<td>employee@example.com</td>
+<td>Employee@123</td>
+</tr>
+<tr>
+<td>Giám đốc</td>
+<td>director@example.com</td>
+<td>Director@123</td>
+</tr>
+</tbody>
+</table>
+<p>Các tài khoản trên được tạo khi database chưa có doanh nghiệp. Chúng không tự thay thế tài khoản trong database cũ. Đổi mật khẩu trước khi dùng ngoài môi trường demo.</p>
+<h2 id="7-phan-quyen-va-vong-oi-tai-khoan">7. Phân quyền và vòng đời tài khoản</h2>
+<ul>
+<li>Mỗi CompanyUser có RoleName và IsActive riêng.</li>
+<li>JWT chứa ID người dùng và AuthVersion. Backend kiểm tra user còn active, phiên bản token, tư cách thành viên và quyền tại doanh nghiệp đang chọn.</li>
+<li>Header <code>X-Company-Id</code> được kiểm tra với database; không tin vai trò từ frontend.</li>
+<li>Đổi quyền hoặc khóa thành viên tác động tại doanh nghiệp đó ở request tiếp theo.</li>
+<li>Đổi mật khẩu hoặc đăng xuất tăng AuthVersion, thu hồi token đã phát hành của tài khoản.</li>
+<li>Admin doanh nghiệp không được đổi mật khẩu chung hoặc sửa tên toàn cục của tài khoản người khác.</li>
+<li>Tạo tài khoản mới: mục Doanh nghiệp, Thêm người dùng.</li>
+<li>Tài khoản đã tồn tại: mục Tài khoản &amp; lời mời, tạo lời mời; người nhận đăng nhập vào đúng email để chấp nhận.</li>
+<li>Admin đổi vai trò/khóa thành viên trong Doanh nghiệp. Không được tự bỏ quyền admin hoặc tự khóa chính mình.</li>
+</ul>
+<p>Mật khẩu và token không được đưa vào báo cáo, ảnh chụp hoặc log công khai. Dữ liệu demo và JWT mặc định không phải cấu hình production.</p>
+<h2 id="8-tinh-tien-vat-va-gia-von">8. Tính tiền, VAT và giá vốn</h2>
+<p>Đối với đơn mới:</p>
+<ol>
+<li>Tổng tiền hàng trước giảm giá = tổng số lượng × đơn giá.</li>
+<li>Giảm giá không vượt quá tiền hàng, được phân bổ theo giá trị dòng.</li>
+<li>VAT từng dòng tính trên tiền hàng sau phân bổ giảm giá.</li>
+<li>Tổng thanh toán = tiền hàng − giảm giá + VAT.</li>
+<li>Giá vốn mỗi dòng = số lượng × UnitCost đã lưu tại lúc bán.</li>
+<li>Doanh thu quản trị chưa VAT = Tổng thanh toán − VAT.</li>
+<li>Lợi nhuận quản trị ước tính = Doanh thu chưa VAT − Giá vốn − Chi phí vận hành chưa VAT.</li>
+</ol>
+<p>Ví dụ: bán 2 sản phẩm × 100, giảm 50 trước VAT, thuế suất 10% thì tiền hàng sau giảm là 150, VAT 15, tổng thanh toán 165. Bộ kiểm thử kiểm tra đúng ví dụ này và sự khớp giữa đơn và hóa đơn.</p>
+<p>Khoản chi nhóm Nhập hàng không được trừ thêm vào chi phí vận hành vì giá vốn được ghi nhận khi bán. Khoản Hoàn tiền không trừ lần hai vào lợi nhuận vì đơn hoàn đã bị loại khỏi doanh thu/giá vốn. Đây là cách tính quản trị giản lược, chưa mô hình hóa đầy đủ phân bổ, khấu hao, doanh thu dồn tích hay khóa sổ.</p>
+<h2 id="9-transaction-va-chong-ghi-trung">9. Transaction và chống ghi trùng</h2>
+<p>Các lệnh tạo đơn, thu/chi, thanh toán công nợ, thay đổi kho, xác nhận OCR, hoàn đơn và ghép sao kê chạy trong transaction Serializable. Bản ghi Revision giúp phát hiện hai người cập nhật cùng phiên bản dữ liệu.</p>
+<p>Các API lệnh trên yêu cầu <code>Idempotency-Key</code>:</p>
+<ul>
+<li>Cùng user + doanh nghiệp + key + nội dung: trả lại kết quả trước, không tạo lệnh mới.</li>
+<li>Cùng key nhưng nội dung khác: trả 409.</li>
+<li>Không có key: trả 400, không ghi tiền/kho.</li>
+<li>Frontend tự tạo key. Khi lỗi mạng, cùng nội dung được giữ key trong bộ nhớ tối đa 15 phút.</li>
+<li>Backend lưu receipt cùng transaction với nghiệp vụ.</li>
+</ul>
+<p>Sau mất mạng rồi tải lại trang, hãy tra cứu nghiệp vụ trước khi tạo lại giao dịch. Không nên đoán lệnh đã thất bại chỉ vì trình duyệt chưa nhận được phản hồi.</p>
+<h2 id="10-hoan-tra-on-hang">10. Hoàn trả đơn hàng</h2>
+<ol>
+<li>Mở Tra cứu nghiệp vụ, chọn Đơn hàng.</li>
+<li>Chọn Chi tiết.</li>
+<li>Ghi lý do và chọn Nhận hàng và hoàn tiền.</li>
+<li>Hệ thống kiểm tra đơn COMPLETED và chưa có hóa đơn phát hành thật.</li>
+<li>Nhận lại toàn bộ số lượng vào kho, tạo Payment âm cho số tiền đã thu, ghi khoản chi hoàn tiền, xóa phần nợ còn lại, hủy hóa đơn mô phỏng liên quan, đổi đơn sang RETURNED và lưu audit.</li>
+<li>Lặp lại cùng key không tạo lần hoàn thứ hai.</li>
+</ol>
+<p>Luồng này là đảo toàn bộ đơn ở phạm vi quản trị, không phải quy trình trả hàng từng phần, điều chỉnh liên kỳ hoặc thủ tục hủy hóa đơn pháp lý. Hoàn tiền là ghi nhận nội bộ, không tự chuyển tiền cho khách qua ngân hàng.</p>
+<h2 id="11-quan-ly-chung-tu-va-ocr">11. Quản lý chứng từ và OCR</h2>
+<ul>
+<li>Upload PDF/JPG/PNG tối đa 10 MB. OCR local giới hạn PDF 30 trang để hạn chế quá tải.</li>
+<li>Hybrid dùng local trước, có thể gọi Gemini khi thiếu trường hoặc confidence thấp.</li>
+<li>Số trang được giữ trong kết quả, preview trả X-Page-Count; OCR vùng gửi đúng trang đang xem.</li>
+<li>Màn hình kiểm tra có thể sửa tên/MST/số/ngày/tiền và từng dòng hàng.</li>
+<li>Tổng tiền lệch hoặc chi tiết không khớp sẽ chặn xác nhận.</li>
+<li>Để sau: chứng từ gốc và kết quả OCR còn trong danh sách chờ, nhưng chỉnh sửa chưa xác nhận trên trình duyệt không được tự lưu thành nháp.</li>
+<li>OCR lại: dùng lại tệp đã lưu, không cần upload lần nữa.</li>
+<li>Chứng từ xử lý bị ngắt có thể thử lại sau 5 phút.</li>
+<li>Confidence được giữ theo kết quả OCR; bước người dùng xác nhận không tự biến điểm thành 100%.</li>
+<li>Sau xác nhận, vào Tra cứu nghiệp vụ/Hóa đơn/Chi tiết để đánh dấu kế toán đã rà soát đối với đầu vào.</li>
+</ul>
+<p>Các mẫu chiết khấu, phí, tỷ giá, nhiều loại thuế và điều chỉnh phức tạp vẫn cần được đối chiếu. Không có cam kết mọi hóa đơn đều được đọc chính xác.</p>
+<h2 id="12-vat-trong-bao-cao">12. VAT trong báo cáo</h2>
+<ul>
+<li>Đầu vào: chỉ lấy hóa đơn INCOMING được kế toán đánh dấu AccountingReviewed và chưa hủy.</li>
+<li>Đầu ra: chỉ lấy hóa đơn OUTGOING đã có IsLegallyIssued do nhà cung cấp xác nhận và chưa hủy.</li>
+<li>Hóa đơn nháp/chờ không được cộng vào số VAT này.</li>
+<li>Mark rà soát nội bộ không tự xác nhận giá trị pháp lý của hóa đơn đầu vào.</li>
+<li>Trong bản demo, đầu ra có thể bằng 0 do chưa tích hợp phát hành thật.</li>
+</ul>
+<p>Đây chưa phải bộ máy xác định điều kiện khấu trừ thuế theo mọi trường hợp pháp luật. Cần kế toán và tích hợp nhà cung cấp phù hợp trước khi dùng kê khai thực tế.</p>
+<h2 id="13-tra-cuu-oi-tac-va-sao-ke">13. Tra cứu, đối tác và sao kê</h2>
+<p>Tra cứu nghiệp vụ hỗ trợ tìm mã/tên/nội dung, từ ngày–đến ngày, trạng thái/nhóm chính xác, sắp xếp và phân trang phía server. Với công nợ, ngày lọc là ngày đến hạn. Với đối tác, ngày lọc là ngày tạo.</p>
+<p>Có thể xem chi tiết đơn/hóa đơn, lịch sử thanh toán và chỉnh thông tin khách hàng/nhà cung cấp. Admin/Kế toán có thể thêm đối tác. Export theo ngày và từ khóa; khi lọc trạng thái, cần xóa bộ lọc trạng thái trước khi xuất file vì export chưa hỗ trợ bộ lọc này.</p>
+<p>Trong Đối soát:</p>
+<ol>
+<li>Nhập giao dịch sao kê thủ công vào tài khoản ngân hàng của doanh nghiệp.</li>
+<li>Chọn thanh toán chưa được ghép có cùng số tiền và chiều tiền.</li>
+<li>Kiểm tra ngày và tham chiếu, xác nhận ghép.</li>
+<li>Backend kiểm tra hai bản ghi cùng doanh nghiệp, số tiền/chiều tiền khớp và thanh toán chưa được ghép nơi khác.</li>
+</ol>
+<p>Nhập sao kê/ghép không tạo thêm thu hoặc chi để tránh ghi tiền lần hai. Chưa kết nối API ngân hàng hoặc import sao kê CSV tự động. Giao dịch chi tự nhập không gắn Payment có thể cần nghiệp vụ thanh toán liên quan trước khi ghép.</p>
+<h2 id="14-chatbot-va-lich-su">14. Chatbot và lịch sử</h2>
+<ul>
+<li>Các câu hỏi doanh thu, lợi nhuận, thu/chi, VAT, công nợ, tồn kho, cảnh báo và hóa đơn mới nhất được tính trực tiếp từ database.</li>
+<li>Hỗ trợ hôm nay, hôm qua, tháng này, tháng trước, tháng M/YYYY, năm này/năm trước, tuần này/tuần trước, 7/30/90 ngày gần nhất.</li>
+<li>Các khoảng thời gian hiện dùng UTC và được ghi trong câu trả lời khi cần. Chưa có khóa sổ theo múi giờ doanh nghiệp.</li>
+<li>So sánh doanh thu tháng này/tháng trước nêu rõ tháng hiện tại chưa kết thúc.</li>
+<li>Công nợ/tồn kho là số dư hiện tại, không giả lập số dư lịch sử khi chưa có mô hình đó.</li>
+<li>Truy vấn theo quý chưa hỗ trợ; hệ thống yêu cầu nêu tháng hoặc số ngày.</li>
+<li>Gemini chỉ được dùng tùy chọn để bổ sung giải thích không có chữ số; số liệu chính do backend dựng.</li>
+<li>Lịch sử lưu theo user và CompanyId, có thể xóa lịch sử của chính mình.</li>
+<li>Chatbot không thực thi SQL do người dùng nhập, không tự thanh toán hay tự sửa dữ liệu.</li>
+</ul>
+<p>Ví dụ: “Doanh thu tháng trước?”, “VAT tháng 7/2026?”, “Khách hàng nào nợ nhiều nhất?”, “Có hóa đơn bất thường nào?”. Các câu hỏi quá chuyên biệt ngoài truy vấn hỗ trợ sẽ nhận tổng quan kèm lời giải thích giới hạn.</p>
+<h2 id="15-du-bao-va-anh-gia-ai">15. Dự báo và đánh giá AI</h2>
+<p>Dự báo dùng Huber Regression với phần dư theo thứ trong tuần. Ít nhất 14 ngày có giao dịch tại backend. Service gộp ngày trùng, điền ngày trống và giới hạn lịch sử.</p>
+<p>Đánh giá dự báo giữ lại 20% cuối (tối thiểu 3 ngày), chỉ fit trên phần trước rồi tính MAE tiền vào, MAE tiền ra và MAE của baseline trung bình 7 ngày. Mô hình cuối cùng được fit trên toàn bộ lịch sử để dự báo. MAE càng thấp càng tốt; điểm đo trên một chuỗi ngắn không bảo đảm chính xác trong tương lai.</p>
+<p>Isolation Forest yêu cầu ít nhất 8 hóa đơn. Điểm rủi ro là thứ hạng tương đối trong tập hiện tại, không phải xác suất gian lận. Khi ML không khả dụng có fallback quy tắc, tên phương pháp được trả rõ. “Không có cảnh báo” không chứng minh giao dịch an toàn.</p>
+<p>Dữ liệu sửa OCR xuất JSONL. Đánh giá theo từng trường:</p>
+<pre><code class="language-powershell">cd ai-service
+python evaluate_ocr.py ..\ocr-training.jsonl --output ocr-evaluation.json
+</code></pre>
+<p>Kết quả chỉ phản ánh các nhãn được cung cấp. Không tạo sẵn phần trăm chính xác trên hóa đơn thật. Chưa có bộ dữ liệu đủ và quy trình kiểm định để fine-tune Tesseract tự động; V4 không tuyên bố đã huấn luyện lại OCR.</p>
+<h2 id="16-xuat-bao-cao">16. Xuất báo cáo</h2>
+<ul>
+<li>CSV: UTF-8 BOM, escape ký tự và chống nội dung bị Excel diễn giải thành công thức.</li>
+<li>XLSX: dữ liệu được ghi dạng chuỗi để bảo toàn mã có số 0 đầu và tránh công thức ngoài ý muốn.</li>
+<li>PDF: font DejaVu Sans đóng gói, tiếng Việt có dấu, nhiều trang, lặp tiêu đề và chia nội dung dài; không cắt ở 42 dòng.</li>
+<li>Báo cáo theo kỳ chuyển từ/to vào export. Tra cứu nghiệp vụ xuất ngày/từ khóa đang chọn.</li>
+<li>Font và giấy phép được lưu trong backend/Assets.</li>
+</ul>
+<p>Bài kiểm tra PDF tạo 150 dòng, đọc lại bằng công cụ PDF để kiểm tra dòng đầu/cuối và nhiều trang. Đây là dữ liệu kiểm tra, không phải số liệu doanh nghiệp.</p>
+<h2 id="17-gateway-hoa-on-ien-tu-tuy-chon">17. Gateway hóa đơn điện tử tùy chọn</h2>
+<p>Mặc định <code>INVOICE_PROVIDER=demo</code>. Muốn dùng bridge:</p>
+<pre><code class="language-env">INVOICE_PROVIDER=gateway
+INVOICE_GATEWAY_URL=https://your-server.example/invoices/issue
+INVOICE_GATEWAY_KEY=your-server-side-key
+</code></pre>
+<p>Gateway phải nhận POST JSON hóa đơn/chi tiết, Bearer token và Idempotency-Key bằng InvoiceId. Phản hồi contract:</p>
+<pre><code class="language-json">{
+  &quot;isLegallyIssued&quot;: true,
+  &quot;status&quot;: &quot;Issued&quot;,
+  &quot;message&quot;: &quot;Đã được nhà cung cấp xác nhận&quot;,
+  &quot;providerReference&quot;: &quot;vendor-reference&quot;
+}
+</code></pre>
+<p>V4 chỉ đánh dấu phát hành khi đủ cờ, trạng thái và tham chiếu. Bạn phải tự triển khai bridge tương ứng hợp đồng API của nhà cung cấp, bao gồm xác thực, ký số và xác minh phản hồi. Gateway mẫu không có tài khoản, chứng thư số hay khả năng phát hành thật khi chưa cấu hình. Không gửi khóa gateway xuống frontend.</p>
+<p>QR/thẻ/ví điện tử tại POS vẫn là phương thức ghi nhận thủ công. Chưa có cổng thanh toán thật, webhook xác minh chữ ký, xử lý chargeback hoặc chuyển tiền hoàn tự động.</p>
+<h2 id="18-kiem-thu-va-ci">18. Kiểm thử và CI</h2>
+<pre><code class="language-powershell">npm --prefix frontend ci
+npm --prefix frontend run build
+npm --prefix frontend test
+dotnet test TaxFlow.sln --logger &quot;trx;LogFileName=local.trx&quot;
+cd ai-service
+pip install -r requirements.txt pytest
+python -m pytest -q
+</code></pre>
+<p>Hoặc chạy <code>scripts/Validate.ps1</code> khi đã cài Node, .NET, Python và Docker.</p>
+<ul>
+<li>Backend tests dùng ASP.NET TestServer và SQLite để kiểm tra HTTP, xác thực, command, transaction và revision.</li>
+<li>Có test migration MySQL được skip nếu chưa cấu hình TEST_MYSQL_CONNECTION.</li>
+<li>CI có service MySQL 8.4 để chạy lại các bài HTTP trên MySQL và test nâng cấp schema cũ. File workflow là cấu hình sẵn; việc tạo file không có nghĩa CI đã được chạy từ GitHub.</li>
+<li>TEST_MYSQL_CONNECTION phải trỏ vào server dành riêng cho test, user có quyền tạo/xóa database. Test tạo database tên taxflow_test_* hoặc taxflow_migration_* rồi xóa chúng.</li>
+<li>Frontend tests dùng DOM giả lập và API fixtures; không thay thế ảnh chụp trực quan, thao tác trên điện thoại hoặc e2e với MySQL thật.</li>
+<li>Python tests bao gồm parser, OCR totals, nhiều trang, dữ liệu không đủ, số không hữu hạn và backtest.</li>
+<li>Kết quả kiểm tra đã chạy được lưu trong <code>validation/RESULTS.md</code> và <code>validation/results.json</code>.</li>
+</ul>
+<h2 id="19-sao-luu-va-khoi-phuc">19. Sao lưu và khôi phục</h2>
+<p><code>scripts/Backup.ps1</code> xuất SQL và ZIP storage, in SHA256 của SQL. Bản sao <code>.env</code> nên lưu riêng ở nơi được bảo vệ; không đưa vào báo cáo hoặc Git.</p>
+<p><code>scripts/Restore.ps1 -SqlFile backups/ten-file.sql</code> yêu cầu gõ RESTORE trước khi ghi đè database. Cần dừng ghi dữ liệu và tự xác minh đúng máy/db đích. Sau phục hồi SQL cần phục hồi storage tương ứng. Không khôi phục nhầm storage của một thời điểm khác.</p>
+<p>Bộ script chưa được chạy trực tiếp trên PowerShell/Docker trong môi trường tạo bản này; hãy kiểm tra phục hồi trên database thử trước. Có script không thay thế việc định kỳ diễn tập phục hồi và lưu bản sao ở vị trí khác máy.</p>
+<h2 id="20-xu-ly-loi-thuong-gap">20. Xử lý lỗi thường gặp</h2>
+<table>
+<thead>
+<tr>
+<th>Hiện tượng</th>
+<th>Cách kiểm tra</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Đăng nhập lại bị yêu cầu sau nâng cấp</td>
+<td>Token cũ đã bị vô hiệu; dùng tài khoản DB hiện tại</td>
+</tr>
+<tr>
+<td>Backend không healthy</td>
+<td><code>docker compose logs --tail=100 backend mysql</code>; kiểm tra mật khẩu volume và lỗi migration</td>
+</tr>
+<tr>
+<td>Người dùng bị 403</td>
+<td>Kiểm tra doanh nghiệp đang chọn, vai trò và trạng thái thành viên</td>
+</tr>
+<tr>
+<td>Giao dịch bị 409</td>
+<td>Có thay đổi đồng thời hoặc key bị dùng với nội dung khác; tải lại dữ liệu trước khi thao tác lại</td>
+</tr>
+<tr>
+<td>API lệnh trả 400 thiếu key</td>
+<td>Client ngoài frontend phải gửi Idempotency-Key</td>
+</tr>
+<tr>
+<td>VAT đầu ra bằng 0</td>
+<td>Chưa có hóa đơn được nhà cung cấp xác nhận phát hành thật</td>
+</tr>
+<tr>
+<td>Không ghép được sao kê</td>
+<td>Kiểm tra số tiền, chiều tiền, Payment và trạng thái ghép trước đó</td>
+</tr>
+<tr>
+<td>OCR không đọc rõ</td>
+<td>Kiểm tra ảnh/PDF, dùng OCR vùng đúng trang, sửa thủ công rồi xác nhận</td>
+</tr>
+<tr>
+<td>PDF nhiều trang chỉ hiện trang đầu</td>
+<td>Kiểm tra ai-service/preview, header X-Page-Count và tải lại frontend</td>
+</tr>
+<tr>
+<td>AI không có dự báo</td>
+<td>Cần đủ lịch sử; xem phương pháp fallback và trạng thái insufficient_data</td>
+</tr>
+<tr>
+<td>Hiện giao diện cũ</td>
+<td>Rebuild frontend và Ctrl + Shift + R</td>
+</tr>
+</tbody>
+</table>
+<h2 id="21-pham-vi-chua-uoc-chung-nhan-hoan-tat">21. Phạm vi chưa được chứng nhận hoàn tất</h2>
+<p>Chưa có kiểm định pháp lý/kế toán; chưa có thanh toán hoặc hóa đơn điện tử thật nếu chưa cấu hình nhà cung cấp. Chưa fine-tune OCR, chưa đánh giá trên tập hóa đơn thật đại diện cho toàn bộ hoạt động doanh nghiệp. Chưa kiểm tra Docker/MySQL/PowerShell và giao diện trình duyệt thật trên máy đích trong phiên tạo bản này. Chưa hỗ trợ hoàn từng phần, khóa sổ, nhiều tiền tệ và hệ thống bút toán kép.</p>
+<p>Các giới hạn này được ghi rõ để phân biệt mã đã triển khai và kiểm thử với hạng mục phụ thuộc dữ liệu, tài khoản hoặc môi trường bên ngoài. Không nên trình bày đồ án rằng tất cả tích hợp thực tế đã hoàn tất.</p></article></main></body></html>

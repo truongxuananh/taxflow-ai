@@ -1,0 +1,104 @@
+name: taxflow-ai
+
+services:
+  mysql:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-taxflow}
+      MYSQL_USER: ${MYSQL_USER:-taxflow}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-taxflow_demo_password}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-taxflow_root_demo_password}
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    ports:
+      - "${BIND_ADDRESS:-127.0.0.1}:3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 15s
+
+  ai-service:
+    build:
+      context: ./ai-service
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "${BIND_ADDRESS:-127.0.0.1}:8000:8000"
+    volumes:
+      - ai_models:/app/models
+      - training_datasets:/app/training-datasets
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Production}
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__Default: Server=mysql;Port=3306;Database=${MYSQL_DATABASE:-taxflow};User=${MYSQL_USER:-taxflow};Password=${MYSQL_PASSWORD:-taxflow_demo_password};CharSet=utf8mb4;
+      Jwt__Secret: ${JWT_SECRET:-DEVELOPMENT_ONLY_REPLACE_WITH_32_CHAR_SECRET}
+      Jwt__Issuer: ${JWT_ISSUER:-TaxFlowAI}
+      Jwt__Audience: ${JWT_AUDIENCE:-TaxFlowAI.Client}
+      INVOICE_PROVIDER: ${INVOICE_PROVIDER:-demo}
+      INVOICE_GATEWAY_URL: ${INVOICE_GATEWAY_URL:-}
+      INVOICE_GATEWAY_KEY: ${INVOICE_GATEWAY_KEY:-}
+      AI_PROVIDER: ${AI_PROVIDER:-hybrid}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4.1-mini}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-2.5-flash}
+      ASSISTANT_MODE: ${ASSISTANT_MODE:-natural}
+      AI_SERVICE_URL: ${AI_SERVICE_URL:-http://ai-service:8000}
+      HYBRID_CONFIDENCE_THRESHOLD: ${HYBRID_CONFIDENCE_THRESHOLD:-0.82}
+      STORAGE_PATH: ${STORAGE_PATH:-/app/storage}
+    ports:
+      - "${BIND_ADDRESS:-127.0.0.1}:5001:8080"
+    volumes:
+      - ./storage:/app/storage
+    depends_on:
+      mysql:
+        condition: service_healthy
+      ai-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 25s
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL:-/api}
+    restart: unless-stopped
+    ports:
+      - "${BIND_ADDRESS:-127.0.0.1}:3000:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 8
+
+volumes:
+  mysql_data:
+  ai_models:
+  training_datasets:

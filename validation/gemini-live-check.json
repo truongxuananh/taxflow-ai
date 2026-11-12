@@ -1,0 +1,44 @@
+{
+  "scope": "Planner-only calls with synthetic questions/history, no database records sent",
+  "passed": 2,
+  "failed": 2,
+  "cases": [
+    {
+      "question": "Ai đang thiếu tiền bên mình nhiều nhất?",
+      "status": "success",
+      "calls": [
+        {
+          "Name": "get_receivables",
+          "Arguments": {
+            "view": "top"
+          }
+        }
+      ]
+    },
+    {
+      "question": "Doanh thu tháng trước là bao nhiêu?",
+      "status": "success",
+      "calls": [
+        {
+          "Name": "get_financial_metrics",
+          "Arguments": {
+            "metric": "revenue",
+            "fromDate": "2026-10-01",
+            "toDate": "2026-10-31"
+          }
+        }
+      ]
+    },
+    {
+      "question": "khoản gì",
+      "status": "failed",
+      "reason": "TaskCanceledException"
+    },
+    {
+      "question": "quá hạn bao lâu",
+      "status": "failed",
+      "reason": "http_503"
+    }
+  ],
+  "limitation": "Two simple requests succeeded; follow-up requests encountered timeout and HTTP 503. Does not prove all paraphrases, production availability or live database integration."
+}

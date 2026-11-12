@@ -1,0 +1,211 @@
+<!doctype html><html lang="vi"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TaxFlow AI V5 — Hướng dẫn hỏi đáp tự nhiên</title><style>body{font:16px/1.75 system-ui,sans-serif;color:#17345c;background:#edf4ff;margin:0}main{max-width:1000px;margin:32px auto;padding:42px;background:white;border-radius:22px;box-shadow:0 12px 50px #1d4ed812}h1,h2,h3{color:#1d4ed8;line-height:1.3}h2{margin-top:2em;border-bottom:1px solid #dbeafe;padding-bottom:12px}pre{background:#eff6ff;border:1px solid #bfdbfe;padding:16px;border-radius:12px;overflow:auto}code{font-size:.9em}table{border-collapse:collapse;width:100%;font-size:15px}td,th{border:1px solid #dbeafe;padding:12px;text-align:left}th{background:#eff6ff}a{color:#1d4ed8}@media(max-width:700px){main{margin:0;padding:22px;border-radius:0}table{display:block;overflow:auto}}@media print{body{background:#fff}main{box-shadow:none;margin:0;padding:0;max-width:100%}h2,h3{break-after:avoid}tr,pre{break-inside:avoid}}</style><main><h1>TaxFlow AI V5 — hỏi dữ liệu bằng ngôn ngữ tự nhiên</h1>
+<h2>1. Bạn cần làm gì?</h2>
+<p>Bản V5 đã thêm lớp Gemini Function Calling cho trợ lý. Bạn không cần tự viết thêm điều kiện cho từng cách hỏi, cũng không cần tạo nhiều API key.</p>
+<ol>
+<li>Giải nén toàn bộ bản V5 vào một thư mục riêng.</li>
+<li>Nếu đang chạy phiên bản cũ, sao lưu dữ liệu trước bằng <code>scripts/Backup.ps1</code> và đọc <code>HUONG-DAN-V4.html</code>. Giữ file <code>.env</code>, thư mục <code>storage</code> và Docker volume MySQL đang dùng. Không chạy <code>docker compose down -v</code> khi nâng cấp.</li>
+<li>Dùng <code>.env</code> đang hoạt động của bạn trong thư mục chứa <code>docker-compose.yml</code>. Không chép đè <code>.env</code> cũ bằng <code>.env.example</code>; file mẫu để người cài mới tham khảo.</li>
+<li>Kiểm tra các biến dưới đây trong <code>.env</code>; giữ nguyên key của bạn. Model phải là model mà tài khoản được phép sử dụng.</li>
+</ol>
+<pre><code class="language-dotenv">ASSISTANT_MODE=natural
+GEMINI_API_KEY=key_cua_ban
+GEMINI_MODEL=model_tai_khoan_cua_ban_ho_tro
+</code></pre>
+<p>Không nhập nguyên các giá trị minh họa ở trên. Key chỉ nằm phía backend; không đưa vào biến <code>VITE_*</code> hay mã frontend.</p>
+<ol>
+<li>Mở Docker Desktop, mở PowerShell tại thư mục chứa <code>docker-compose.yml</code>, chạy:</li>
+</ol>
+<pre><code class="language-powershell">docker compose up -d --build
+docker compose ps
+</code></pre>
+<ol>
+<li>Khi các dịch vụ sẵn sàng, mở <code>http://localhost:3000</code>, nhấn Ctrl + Shift + R, đăng nhập lại và chọn đúng doanh nghiệp.</li>
+<li>Vào <strong>Trợ lý &amp; AI tài chính → Hỏi dữ liệu</strong>. Gửi một câu hỏi. Dòng <strong>Gemini hiểu câu hỏi · dữ liệu từ hệ thống</strong> dưới câu trả lời cho biết lần đó đã đi qua Gemini và công cụ dữ liệu. Dòng thông báo “đã cấu hình” phía trên chỉ xác nhận có cấu hình, chưa xác nhận API kết nối được.</li>
+<li>Nếu lịch sử cũ đang lẫn nhiều chủ đề, bấm “Xóa lịch sử của tôi” để bắt đầu lại. Thao tác này chỉ xóa hội thoại của bạn trong doanh nghiệp đang chọn.</li>
+</ol>
+<p>Nâng cấp V5 không thêm bảng/cột mới so với V4.1. Vẫn cần migration ContextJson của V4.1 nếu đi từ bản cũ hơn. Backend kiểm tra/khởi tạo database theo cơ chế có sẵn; xem <code>docs/DATABASE_MIGRATIONS.md</code> nếu log báo lỗi schema. Không tự chạy SQL xóa bảng để xử lý lỗi.</p>
+<h2>2. Thử đúng tình huống bạn gặp</h2>
+<p>Bạn có thể hỏi theo chuỗi:</p>
+<ul>
+<li>“Ai đang thiếu tiền bên mình nhiều nhất?”</li>
+<li>“Khoản gì thế?”</li>
+<li>“Họ trễ mấy ngày rồi?”</li>
+<li>“Đã trả được bao nhiêu?”</li>
+<li>“Cho xem chi tiết lại.”</li>
+</ul>
+<p>Không cần gõ đúng một câu mẫu. Gemini chọn ý định và tham số; backend dùng khách hàng đã xác định trong ngữ cảnh của bạn để đọc lại sổ công nợ. Nếu người đó đã trả tiền sau câu hỏi đầu tiên, câu tiếp theo phải dùng số dư mới. Nếu có nhiều khách hàng trùng tên, hệ thống yêu cầu bạn chọn tên/mã rõ hơn.</p>
+<p>Các câu hỏi khác có thể thử:</p>
+<table>
+<thead>
+<tr>
+<th>Nhu cầu</th>
+<th>Ví dụ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Doanh thu theo kỳ</td>
+<td>Tháng trước bán được bao nhiêu, chưa tính VAT?</td>
+</tr>
+<tr>
+<td>So sánh</td>
+<td>So với tháng trước nữa thì chênh bao nhiêu?</td>
+</tr>
+<tr>
+<td>Lợi nhuận</td>
+<td>Quý trước lời bao nhiêu sau giá vốn và chi phí vận hành?</td>
+</tr>
+<tr>
+<td>Thu/chi thực tế</td>
+<td>Tuần này tiền vào và tiền ra thế nào?</td>
+</tr>
+<tr>
+<td>VAT</td>
+<td>VAT tháng mười gồm những số nào?</td>
+</tr>
+<tr>
+<td>Hóa đơn</td>
+<td>Cho xem hóa đơn mới nhất, rồi xem chi tiết cái đó.</td>
+</tr>
+<tr>
+<td>Tồn kho</td>
+<td>Mặt hàng nào gần hết?</td>
+</tr>
+<tr>
+<td>Cảnh báo</td>
+<td>Có cảnh báo hóa đơn nào đang lưu?</td>
+</tr>
+<tr>
+<td>Tìm khách</td>
+<td>Tìm giúp khách có tên Nhi.</td>
+</tr>
+</tbody>
+</table>
+<p>Nếu chưa nói kỳ thời gian, trợ lý có thể hỏi “Bạn muốn xem trong kỳ nào?”. Bạn có thể trả lời “tháng trước” hoặc nêu khoảng ngày. Nếu đổi chủ đề, hãy nói rõ chỉ tiêu/đối tượng mới để giảm mơ hồ.</p>
+<h2>3. Phần đã thay đổi</h2>
+<h3>Hiểu câu hỏi bằng model</h3>
+<p><code>GeminiFunctionPlanner</code> gửi câu hỏi, tối đa 12 tin nhắn gần nhất và ngữ cảnh của đúng người dùng/doanh nghiệp đến Gemini. Ngày hiện tại và múi giờ Việt Nam được cung cấp để model xác định các kỳ tương đối. Lịch sử là ngữ cảnh để hiểu câu, không phải nguồn số liệu hiện tại.</p>
+<p>Model chỉ được đề xuất các hàm đã khai báo. Không nhận SQL, câu lệnh cập nhật hay <code>companyId</code> từ model. Có tối đa ba công cụ cho một câu hỏi; các công cụ được chạy lần lượt để có thể dùng ngữ cảnh của kết quả trước. Nếu cần làm rõ thì ưu tiên hỏi lại.</p>
+<h3>Dữ liệu và tính toán ở backend</h3>
+<table>
+<thead>
+<tr>
+<th>Công cụ</th>
+<th>Dữ liệu/chức năng</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>get_receivables</td>
+<td>Tổng phải thu, khách nợ nhiều nhất, chi tiết, quá hạn, thanh toán</td>
+</tr>
+<tr>
+<td>get_financial_metrics</td>
+<td>Doanh thu, tiền vào/ra, chi phí vận hành, giá vốn, dòng tiền, lợi nhuận, VAT, so sánh kỳ</td>
+</tr>
+<tr>
+<td>get_invoices</td>
+<td>Hóa đơn theo từ khóa, hướng, khoảng ngày; hóa đơn mới nhất và chi tiết</td>
+</tr>
+<tr>
+<td>get_inventory</td>
+<td>Tồn kho hiện tại, mặt hàng dưới ngưỡng</td>
+</tr>
+<tr>
+<td>get_alerts</td>
+<td>Cảnh báo đã lưu</td>
+</tr>
+<tr>
+<td>find_customers</td>
+<td>Tìm khách để xác định đối tượng</td>
+</tr>
+<tr>
+<td>explain_concept</td>
+<td>Giải thích khái niệm và khả năng phần mềm</td>
+</tr>
+<tr>
+<td>clarify_question</td>
+<td>Hỏi thông tin còn thiếu hoặc giới hạn hiện tại</td>
+</tr>
+</tbody>
+</table>
+<p>Các phép tính và phần số liệu trong câu trả lời do C# dựng từ dữ liệu truy vấn. Không có bước cho model tự viết lại số tiền. Vì vậy cách trả lời thiên về rõ nguồn, con số và công thức; đây không phải chatbot tư vấn mọi lĩnh vực.</p>
+<p>Ngữ cảnh được lưu ở <code>ChatMessages.ContextJson</code>, tách theo CompanyId/UserId. ID khách/hóa đơn trong ngữ cảnh vẫn phải kiểm tra lại quyền và doanh nghiệp trước khi đọc. Số dư được truy vấn lại, không tái sử dụng số tiền trong lịch sử.</p>
+<h3>Kỳ và ý nghĩa chỉ tiêu</h3>
+<ul>
+<li>Khoảng ngày tài chính dùng ngày lịch Việt Nam, bao gồm cả ngày đầu và cuối; backend đổi sang UTC để truy vấn. Mỗi khoảng tối đa 1.830 ngày.</li>
+<li>Doanh thu là đơn hoàn tất sau giảm giá, chưa VAT; khác tiền thực tế đã thu.</li>
+<li>Lợi nhuận quản trị ước tính = doanh thu chưa VAT − giá vốn snapshot − chi phí vận hành chưa VAT. Mua hàng nhập kho và hoàn tiền không bị trừ lần hai như chi phí vận hành.</li>
+<li>Tiền vào/ra lấy từ sổ thu/chi, khác doanh thu/chi phí kế toán.</li>
+<li>VAT đầu vào cần được rà soát; đầu ra cần xác nhận phát hành. Số này chưa phải tờ khai chính thức.</li>
+<li>Công nợ/tồn kho là số dư hiện tại. Chưa có chức năng khôi phục số dư lịch sử chỉ từ một ngày quá khứ.</li>
+<li>Ngày đối chiếu quá hạn của công cụ công nợ hiện dùng UTC và được ghi rõ trong câu trả lời; không nhầm với khoảng ngày báo cáo theo giờ Việt Nam.</li>
+<li>So sánh thể hiện chênh lệch. Chưa đủ dữ liệu để tự kết luận nguyên nhân hoặc dự báo chắc chắn.</li>
+</ul>
+<h2>4. Khi API gặp vấn đề</h2>
+<p>Nếu Gemini không khả dụng, backend dùng lớp dự phòng V4.1, không gọi model lần hai để kéo dài thời gian chờ. Câu trả lời và lịch sử hiển thị rõ rằng khả năng hiểu câu đang hạn chế.</p>
+<table>
+<thead>
+<tr>
+<th>Chế độ trả về</th>
+<th>Cần kiểm tra</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>gemini-functions+database</td>
+<td>Đã nhận lời gọi công cụ từ Gemini và xử lý ở backend</td>
+</tr>
+<tr>
+<td>fallback-missing_key</td>
+<td>GEMINI_API_KEY chưa vào container backend</td>
+</tr>
+<tr>
+<td>fallback-http_400 / 404</td>
+<td>Tên model, API hoặc khả năng Function Calling của model</td>
+</tr>
+<tr>
+<td>fallback-http_401 / 403</td>
+<td>Key, quyền truy cập, trạng thái project</td>
+</tr>
+<tr>
+<td>fallback-http_503</td>
+<td>Dịch vụ Gemini tạm không sẵn sàng; thử lại sau</td>
+</tr>
+<tr>
+<td>fallback-http_429</td>
+<td>Hạn mức/tốc độ/chi phí của project; thử lại sau hoặc điều chỉnh gói</td>
+</tr>
+<tr>
+<td>fallback-unavailable</td>
+<td>Kết nối mạng, timeout hoặc phản hồi không đọc được</td>
+</tr>
+<tr>
+<td>fallback-legacy</td>
+<td>ASSISTANT_MODE=legacy đang được chọn</td>
+</tr>
+<tr>
+<td>fallback-invalid_call / incomplete_response / missing_call</td>
+<td>Model không trả lời đúng dạng công cụ; thử lại hoặc đổi model tương thích</td>
+</tr>
+</tbody>
+</table>
+<p><code>GET /api/ai/assistant-status</code> cần đăng nhập và chọn đúng doanh nghiệp; chỉ trả model, chế độ và có key hay chưa. Không trả key, không tự thực hiện lời gọi Google để xác minh kết nối. Không cần thêm nhiều key để sửa lỗi hiểu hội thoại. Các key trong cùng project thường vẫn chịu hạn mức chung.</p>
+<p>Sau khi sửa <code>.env</code>, chạy lại <code>docker compose up -d --build</code> để container nhận cấu hình. Không chụp/gửi toàn bộ <code>.env</code> hoặc log chứa bí mật khi nhờ hỗ trợ.</p>
+<h2>5. Giới hạn cần hiểu</h2>
+<p>Không có thiết kế nào bảo đảm “hỏi thế nào cũng chính xác 100%”. Model có thể chọn sai ý định/kỳ; dữ liệu đầu vào có thể sai hoặc thiếu; câu hỏi có thể mơ hồ. Bản này giảm rủi ro bằng hàm được giới hạn, kiểm tra tham số/quyền, tính số ở backend, nguồn rõ ràng và hỏi lại thay vì tự bịa.</p>
+<p>Chỉ hỗ trợ các nghiệp vụ trong bảng công cụ. Không tự chuyển tiền, đánh dấu đã thanh toán, xóa dữ liệu, kết luận gian lận, tư vấn pháp lý/thuế tùy tình huống hoặc tra cứu tin tức bên ngoài. Các thao tác ghi vẫn thực hiện qua màn hình nghiệp vụ và quyền tương ứng.</p>
+<p>Gemini nhận câu hỏi/lịch sử gần nhất để hiểu ý định. Không gửi toàn bộ cơ sở dữ liệu cho model, nhưng tin nhắn của bạn có thể chứa thông tin doanh nghiệp; hãy sử dụng tài khoản/project phù hợp với cách bạn muốn quản lý dữ liệu.</p>
+<h2>6. Kiểm chứng và mã nguồn</h2>
+<p>Kết quả chạy cụ thể ở <code>validation/RESULTS.md</code> và <code>validation/results.json</code>. Các bài kiểm tra API giả lập kiểm chứng hợp đồng Function Calling, quyền, ngữ cảnh, tính toán và lỗi provider; không được xem là bằng chứng cho mọi cách diễn đạt ngoài đời. Có thử riêng Gemini thật bằng câu hỏi/ngữ cảnh tổng hợp: 2 yêu cầu thành công; 1 timeout và 1 HTTP503. Không gửi dữ liệu database thật để thực hiện phép kiểm tra đó. Xem chi tiết trong kết quả kiểm tra.</p>
+<p>Các file chính:</p>
+<ul>
+<li><code>backend/Services/GeminiFunctionPlanner.cs</code>: hợp đồng Gemini và kiểm tra phản hồi.</li>
+<li><code>backend/Services/GeminiBusinessTools.cs</code>: công cụ dữ liệu chỉ đọc.</li>
+<li><code>backend/Services/NaturalAssistantService.cs</code>: lịch sử, thực thi, lưu hội thoại, chế độ dự phòng.</li>
+<li><code>backend/Services/ReceivableConversationService.cs</code>: truy vấn chi tiết nợ/thanh toán.</li>
+<li><code>frontend/src/pages/AssistantPage.tsx</code>: hội thoại, trạng thái cấu hình và nhãn chế độ trả lời.</li>
+<li><code>tests/backend/NaturalLanguageTests.cs</code>: các tình huống mới.</li>
+</ul>
+<p>Tài liệu chính thức tham khảo: https://ai.google.dev/gemini-api/docs/generate-content/function-calling và https://ai.google.dev/gemini-api/docs/rate-limits.</p>
+<p>Các hướng dẫn giao diện, OCR, backup, phân quyền và nghiệp vụ của V4/V4.1 vẫn có trong gói này. Chưa kiểm chứng Docker/MySQL và trình duyệt thực tế trên máy của bạn; cần chạy các bước trên và đối chiếu với dữ liệu thật trước khi dùng kết quả để quyết định nghiệp vụ.</p></main></html>

@@ -1,0 +1,41 @@
+name: Validate TaxFlow
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: ci_only_password
+        ports: ['3306:3306']
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -pci_only_password"
+          --health-interval=5s --health-timeout=5s --health-retries=30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci && npm run build && npm test
+        working-directory: frontend
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - run: dotnet test TaxFlow.sln --logger 'trx;LogFileName=ci.trx'
+      - run: dotnet test TaxFlow.sln --logger 'trx;LogFileName=mysql-ci.trx'
+        env:
+          TEST_MYSQL_CONNECTION: Server=127.0.0.1;Port=3306;User=root;Password=ci_only_password;
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt pytest && python -m pytest -q
+        working-directory: ai-service
+      - run: docker compose config --quiet
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: '**/TestResults/*.trx'
