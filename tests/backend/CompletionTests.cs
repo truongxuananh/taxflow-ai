@@ -15,14 +15,14 @@ using TaxFlow.Api.Data;
 using TaxFlow.Api.Models;
 using TaxFlow.Api.Services;
 using Xunit;
-
+ 
 namespace TaxFlow.Tests;
 public sealed class ApiFactory : WebApplicationFactory<Program>
 {
     public HttpMessageHandler? GeminiHandler { get; init; }
     private readonly SqliteConnection connection = new("Data Source=:memory:");
     private string? mysql;
-
+ 
     public Guid CompanyA { get; private set; }
     public Guid CompanyB { get; private set; }
     public Guid UserId { get; private set; }
@@ -72,8 +72,8 @@ public sealed class ApiFactory : WebApplicationFactory<Program>
         client.DefaultRequestHeaders.Add("X-Company-Id", CompanyA.ToString());
         return client;
     }
-        private bool databaseDropped;
-    protected override void Dispose(bool disposing)
+    private bool databaseDropped;
+    private bool databaseDropped; protected override void Dispose(bool disposing)
     {
         // WebApplicationFactory gọi lại Dispose(true) sau khi đã giải phóng Services,
         // nên chỉ xóa database MySQL tạm ở lần gọi đầu tiên.
@@ -150,7 +150,7 @@ public sealed class CompletionTests
         var response = await client.GetAsync("/api/browse/customers?search=Customer&page=1&pageSize=10"); response.EnsureSuccessStatusCode();
         var data = await response.Content.ReadFromJsonAsync<JsonElement>(); Assert.Equal(1, data.GetProperty("total").GetInt32());
     }
-
+ 
     [Fact] public async Task BankMatchDoesNotCreateASecondIncome()
     {
         using var app = new ApiFactory(); using var client = await app.LoginAsync(); Guid bankId;
@@ -229,7 +229,7 @@ public sealed class CompletionTests
         using var check = app.Services.CreateScope(); var invoice = await check.ServiceProvider.GetRequiredService<AppDbContext>().Invoices.Include(x => x.Items).SingleAsync();
         Assert.Equal(invoice.Total, invoice.Subtotal + invoice.VatAmount); Assert.Equal(invoice.Total, invoice.Items.Sum(x => x.Total));
     }
-
+ 
     [Theory] [InlineData("Doanh thu tháng trước", 2026, 10)] [InlineData("VAT tháng 7/2025", 2025, 7)]
     public void AssistantResolvesTheRequestedMonth(string question, int year, int month)
     {
