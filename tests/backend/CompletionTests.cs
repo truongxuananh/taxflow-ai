@@ -72,7 +72,6 @@ public sealed class ApiFactory : WebApplicationFactory<Program>
         client.DefaultRequestHeaders.Add("X-Company-Id", CompanyA.ToString());
         return client;
     }
-    private bool databaseDropped;
     private bool databaseDropped; protected override void Dispose(bool disposing)
     {
         // WebApplicationFactory gọi lại Dispose(true) sau khi đã giải phóng Services,
